@@ -67,8 +67,8 @@ void NiceBusT4::control(const CoverCall &call) {
 void NiceBusT4::setup() {
 
 
- // _uart =  uart_init(_UART_NO, BAUD_WORK, SERIAL_8N1, SERIAL_6E2, TX_P, 256, false); //for ESP8266
-  _uart =  uartBegin(_UART_NO, BAUD_WORK, SERIAL_8N1, RX_PIN, TX_PIN, 256, 256, false, 112); //for WT32
+  _uart =  uart_init(_UART_NO, BAUD_WORK, SERIAL_8N1, SERIAL_6E2, TX_P, 256, false); //for ESP8266
+ // _uart =  uartBegin(_UART_NO, BAUD_WORK, SERIAL_8N1, RX_PIN, TX_PIN, 256, 256, false, 112); //for WT32
   // who's online?
 //  this->tx_buffer_.push(gen_inf_cmd(0x00, 0xff, FOR_ALL, WHO, GET, 0x00));
 
@@ -117,8 +117,8 @@ void NiceBusT4::loop() {
 
 
   while (uartAvailable(_uart) > 0) {
-    //uint8_t c = (uint8_t)uart_Read(_uart);                // read the byte for ESP8266
-    uint8_t c = (uint8_t)uartRead(_uart);                // read the byte for ESP32
+    uint8_t c = (uint8_t)uart_Read(_uart);                // read the byte for ESP8266
+    //uint8_t c = (uint8_t)uartRead(_uart);                // read the byte for ESP32
     this->handle_char_(c);                                     // send the byte for processing
     this->last_uart_byte_ = now;
   } //while
@@ -1117,18 +1117,18 @@ void NiceBusT4::send_array_cmd(const uint8_t *data, size_t len) {
   char br_ch = 0x00;                            // for break
   uartFlush(_uart);                             // clear uart
   uartSetBaudRate(_uart, BAUD_BREAK);           // lower the body rate
-  //uart_write(_uart, &br_ch, 1);               // for ESP8266                     // send zero at low speed, long zero
-  uart_write_bytes(UART_NUM_2, &br_ch, 1);      // for ESP32    // send zero at low speed, long zero
+  uart_write(_uart, &br_ch, 1);               // for ESP8266                     // send zero at low speed, long zero
+  //uart_write_bytes(UART_NUM_2, &br_ch, 1);      // for ESP32    // send zero at low speed, long zero
   //uart_write(_uart, (char *)&dummy, 1);
-  //uart_wait_tx_empty(_uart);                  // for ESP8266   // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
-  uart_wait_tx_done(UART_NUM_2,100);            // for ESP32      // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
+  uart_wait_tx_empty(_uart);                  // for ESP8266   // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
+  //uart_wait_tx_done(UART_NUM_2,100);            // for ESP32      // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
   delayMicroseconds(90);                        // add a delay to the wait, otherwise the speed will switch before sending. With delay on d1-mini I got a perfect signal, break = 520us
   uartSetBaudRate(_uart, BAUD_WORK);            // we return the working body rate
-  //uart_write(_uart, (char *)&data[0], len);             // for ESP8266   // send the main package
-  uart_write_bytes(UART_NUM_2, (char *)&data[0], len);    // for ESP32      // send the main package
+  uart_write(_uart, (char *)&data[0], len);             // for ESP8266   // send the main package
+  //uart_write_bytes(UART_NUM_2, (char *)&data[0], len);    // for ESP32      // send the main package
   //uart_write(_uart, (char *)raw_cmd_buf, sizeof(raw_cmd_buf));
-  //uart_wait_tx_empty(_uart);          // for ESP8266     // waiting for the sending to complete
-  uart_wait_tx_done(UART_NUM_2,100);    // for ESP32        // waiting for the sending to complete
+  uart_wait_tx_empty(_uart);          // for ESP8266     // waiting for the sending to complete
+  //uart_wait_tx_done(UART_NUM_2,100);    // for ESP32        // waiting for the sending to complete
   delayMicroseconds(90);
   //delayMicroseconds(150); //for ESP32
 
