@@ -1,7 +1,7 @@
 #include "nice-bust4.h"
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"  // to use auxiliary functions for working with strings
-#include "driver/uart.h"           // functions for ESP32 board type 
+//#include "driver/uart.h"           // functions for ESP32 board type 
 
 namespace esphome {
 namespace bus_t4 {
