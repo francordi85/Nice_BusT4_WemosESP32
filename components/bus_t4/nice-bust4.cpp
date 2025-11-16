@@ -116,7 +116,7 @@ void NiceBusT4::loop() {
   } 
 
 
-  while (uart_available(_uart) > 0) {
+  while (uart_rx_available(_uart) > 0) {
     uint8_t c = (uint8_t)uart_read(_uart);                // read the byte for ESP8266
     //uint8_t c = (uint8_t)uartRead(_uart);                // read the byte for ESP32
     this->handle_char_(c);                                     // send the byte for processing
