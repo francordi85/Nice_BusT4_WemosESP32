@@ -116,8 +116,8 @@ void NiceBusT4::loop() {
   } 
 
 
-  while (uartAvailable(_uart) > 0) {
-    uint8_t c = (uint8_t)uart_Read(_uart);                // read the byte for ESP8266
+  while (uart_rx_available(_uart) > 0) {
+    uint8_t c = (uint8_t)uart_read(_uart);                // read the byte for ESP8266
     //uint8_t c = (uint8_t)uartRead(_uart);                // read the byte for ESP32
     this->handle_char_(c);                                     // send the byte for processing
     this->last_uart_byte_ = now;
@@ -1115,8 +1115,8 @@ void NiceBusT4::send_array_cmd(const uint8_t *data, size_t len) {
   // sending data to uart
 
   char br_ch = 0x00;                            // for break
-  uartFlush(_uart);                             // clear uart
-  uartSetBaudRate(_uart, BAUD_BREAK);           // lower the body rate
+  uart_flush(_uart);                             // clear uart
+  uart_set_baudrate(_uart, BAUD_BREAK);           // lower the body rate
   uart_write(_uart, &br_ch, 1);               // for ESP8266                     // send zero at low speed, long zero
   //uart_write_bytes(UART_NUM_2, &br_ch, 1);      // for ESP32    // send zero at low speed, long zero
   //uart_write(_uart, (char *)&dummy, 1);
