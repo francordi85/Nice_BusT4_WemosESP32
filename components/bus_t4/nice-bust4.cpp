@@ -1124,7 +1124,7 @@ void NiceBusT4::send_array_cmd(const uint8_t *data, size_t len) {
   uart_wait_tx_empty(_uart);                  // for ESP8266   // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
   //uart_wait_tx_done(UART_NUM_2,100);            // for ESP32      // We wait until the sending is completed. There is an error here in the uart.h library (esp8266 core 3.0.2), waiting is not enough for further uart_set_baudrate().
   delayMicroseconds(90);                        // add a delay to the wait, otherwise the speed will switch before sending. With delay on d1-mini I got a perfect signal, break = 520us
-  uartSetBaudRate(_uart, BAUD_WORK);            // we return the working body rate
+  uart_set_baudrate(_uart, BAUD_WORK);            // we return the working body rate
   uart_write(_uart, (char *)&data[0], len);             // for ESP8266   // send the main package
   //uart_write_bytes(UART_NUM_2, (char *)&data[0], len);    // for ESP32      // send the main package
   //uart_write(_uart, (char *)raw_cmd_buf, sizeof(raw_cmd_buf));
