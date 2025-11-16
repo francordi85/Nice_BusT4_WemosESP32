@@ -66,11 +66,12 @@ namespace bus_t4 {
 using namespace esphome::cover;
 //using esp8266::timeoutTemplate::oneShotMs;
 
-
-static const int _UART_NO=UART_NUM_2; /* uart number */
+static const int _UART_NO=UART0; /* номер uart */
+static const int TX_P = 1;         /* пин Tx */
+//static const int _UART_NO=UART_NUM_2; /* uart number */
 //static const int _UART_NO=UART_NUM_1;
-static const int TX_PIN = 17;           /* pin Tx */
-static const int RX_PIN = 16;           /* pin Rx */
+//static const int TX_PIN = 17;           /* pin Tx */
+//static const int RX_PIN = 16;           /* pin Rx */
 static const uint32_t BAUD_BREAK = 9200; /* baudrate for a long pulse before the packet */
 static const uint32_t BAUD_WORK = 19200; /* working baudrate */
 static const uint8_t START_CODE = 0x55; /*packet start byte */
