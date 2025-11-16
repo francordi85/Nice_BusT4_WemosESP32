@@ -1,4 +1,4 @@
-#include "nice-bust4.h"
+	#include "nice-bust4.h"
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"  // to use auxiliary functions for working with strings
 //#include "driver/uart.h"           // functions for ESP32 board type 
@@ -116,7 +116,7 @@ void NiceBusT4::loop() {
   } 
 
 
-  while (uart_rx_available(_uart) > 0) {
+  while (uart_available(_uart) > 0) {
     uint8_t c = (uint8_t)uart_read(_uart);                // read the byte for ESP8266
     //uint8_t c = (uint8_t)uartRead(_uart);                // read the byte for ESP32
     this->handle_char_(c);                                     // send the byte for processing
